@@ -24,7 +24,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       dispatch(runSimulationTick()); // Dispatch the action
-    }, 3000); // Update every 3 seconds
+    }, 1000); // Update every 3 seconds
 
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, [dispatch]); // Add dispatch to dependency array

@@ -1,0 +1,158 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 210 33% 98%;
+    --foreground: 210 25% 25%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 25% 25%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 25% 25%;
+
+    --primary: 210 50% 40%;
+    --primary-foreground: 210 20% 98%;
+
+    --secondary: 210 20% 96%;
+    --secondary-foreground: 210 25% 25%;
+
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 210 20% 96%;
+    --accent-foreground: 210 25% 25%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 210 25% 25%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 210 25% 15%;
+    --foreground: 210 20% 98%;
+
+    --card: 210 25% 15%;
+    --card-foreground: 210 20% 98%;
+
+    --popover: 210 25% 15%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 210 50% 40%;
+    --primary-foreground: 210 20% 98%;
+
+    --secondary: 210 33% 25%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 210 33% 25%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 210 33% 25%;
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 20% 98%;
+
+    --border: 210 33% 25%;
+    --input: 210 33% 25%;
+    --ring: 210 27% 84%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-gradient-to-b from-background to-background/80 text-foreground min-h-screen;
+    font-family: 'Inter', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+  }
+}
+
+/* Custom styles for MatStat */
+@layer components {
+  .sensor-indicator {
+    @apply w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md;
+    transition: all 0.3s ease;
+  }
+  
+  .sensor-good {
+    @apply bg-gradient-to-r from-matstat-alert-success to-matstat-alert-success/90;
+  }
+  
+  .sensor-warning {
+    @apply bg-gradient-to-r from-matstat-alert-warning to-matstat-alert-warning/90;
+  }
+  
+  .sensor-danger {
+    @apply bg-gradient-to-r from-matstat-alert-danger to-matstat-alert-danger/90;
+  }
+  
+  .alert-border {
+    @apply border-4 border-matstat-alert-danger animate-pulse-border;
+  }
+  
+  .graph-container {
+    @apply bg-white rounded-xl shadow-md p-5 h-[250px] w-full backdrop-blur-sm border border-gray-100;
+  }
+  
+  .app-header {
+    @apply bg-gradient-to-r from-matstat-blue-dark via-matstat-blue-dark/95 to-matstat-blue-dark text-white py-4 px-6 shadow-lg;
+  }
+  
+  .card-base {
+    @apply bg-white border border-gray-100 rounded-xl shadow-md hover:shadow-lg transition-all duration-300;
+  }
+  
+  .section-title {
+    @apply text-2xl font-semibold text-matstat-blue-dark mb-6 flex items-center;
+  }
+  
+  .stat-card {
+    @apply bg-gradient-to-br from-white to-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm transition-all duration-300;
+  }
+  
+  .btn-primary {
+    @apply bg-gradient-to-r from-matstat-blue to-matstat-blue-light hover:from-matstat-blue-light hover:to-matstat-blue text-white font-medium py-3 px-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-matstat-blue border border-matstat-blue/20 hover:bg-matstat-blue/5 font-medium py-3 px-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300;
+  }
+  
+  .fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* Additional animation keyframes */
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(231, 76, 60, 0.3); }
+  50% { border-color: rgba(231, 76, 60, 1); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
