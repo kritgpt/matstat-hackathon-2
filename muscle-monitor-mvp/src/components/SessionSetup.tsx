@@ -178,7 +178,7 @@ const SessionSetup: React.FC<SessionSetupProps> = ({ onSessionStart }) => {
               </div>
             </CardContent>
           </Card>
-
+          
           <Button 
             className="w-full py-6 text-lg"
             disabled={!isCalibrated} 
