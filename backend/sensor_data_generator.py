@@ -11,10 +11,10 @@ t = np.linspace(0, duration_sec, int(duration_sec * fs))
 
 # Baseline force (Newtons) and deformation (mm) for each muscle
 baseline = {
-    'L_ham': (400.0, 2.1),
-    'R_ham': (410.0, 2.0),
-    'L_quad': (500.0, 1.8),
-    'R_quad': (495.0, 1.9),
+    'L_ham': (90.0, 2.1),
+    'R_ham': (90.0, 2.0),
+    'L_quad': (90.0, 1.8),
+    'R_quad': (90.0, 1.9),
 }
 
 def add_noise(signal, std):
@@ -27,7 +27,7 @@ def normal_training(t, baseline, noise_frac=0.02):
         data[muscle] = add_noise(np.ones_like(t) * f0, noise_std)
     return data
 
-def gradual_fatigue(t, baseline, fatigue_rate=0.0005, noise_frac=0.02):
+def gradual_fatigue(t, baseline, fatigue_rate=0.0009, noise_frac=0.002):
     data = {}
     for muscle, (f0, _) in baseline.items():
         decay = np.exp(-fatigue_rate * t)
@@ -48,6 +48,7 @@ def build_dataframe(t, force_data, baseline):
     df = pd.DataFrame({'time_sec': t})
     for muscle, force_series in force_data.items():
         f0, d0 = baseline[muscle]
+        df['force_' + muscle] = force_series
         df[f'def_{muscle}'] = derive_deformation(force_series, f0, d0)
     return df
 
@@ -72,10 +73,12 @@ def df_to_json(df):
     for _, row in df.iterrows():
         timestamp = row['time_sec']
         sensors = []
+        print(row)
         for muscle in baseline.keys():
+            print(muscle)
             sensors.append({
                 'id': muscle_dict[muscle],
-                'output': row[f'def_{muscle}']
+                'output': row[f'force_{muscle}']
             })
         json_data.append({
             'timestamp': int(timestamp * 1000),  # Convert to milliseconds
@@ -87,9 +90,9 @@ def df_to_json(df):
 # Main simulation
 if __name__ == '__main__':
     scenarios = {
-        'normal': normal_training,
+        # 'normal': normal_training,
         'fatigue': gradual_fatigue,
-        'asymmetry': sudden_asymmetry,
+        # 'asymmetry': sudden_asymmetry,
     }
 
     for name, func in scenarios.items():

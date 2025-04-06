@@ -157,7 +157,7 @@ def handle_session_start(data):
         if existing_session and existing_session.status == 'active':
             print(f"Conflict: Session {application_root.current_session_id} is already active.")
             # Optionally emit an error back to the specific client
-            emit('session_error', {'message': 'Another session is already active'}, room=request.sid)
+            emit('session_error', {'message': 'Another session is already active'})
             return # Prevent starting a new one
 
     # Create new session
@@ -172,11 +172,11 @@ def handle_session_start(data):
         emit('session_started', {
             'session_id': new_session.id,
             'start_time': new_session.start_time.isoformat()
-        }, room=request.sid)
+        })
     except Exception as e:
         db.session.rollback()
         print(f"Database error starting session via SocketIO: {e}")
-        emit('session_error', {'message': 'Failed to start session due to database error'}, room=request.sid)
+        emit('session_error', {'message': 'Failed to start session due to database error'})
 
 
 @socketio.on('session_end')
@@ -188,14 +188,14 @@ def handle_session_end(data):
 
     if session_id_to_end is None:
         print("No active session to end.")
-        emit('session_error', {'message': 'No active session to end'}, room=request.sid)
+        emit('session_error', {'message': 'No active session to end'})
         return
 
     session_to_end = db.session.get(TrainingSession, session_id_to_end)
     if not session_to_end:
         print(f"Error: Active session ID {session_id_to_end} not found in DB.")
         application_root.current_session_id = None # Clear inconsistent state
-        emit('session_error', {'message': 'Active session not found in database'}, room=request.sid)
+        emit('session_error', {'message': 'Active session not found in database'})
         return
 
     if session_to_end.status != 'active':
@@ -211,10 +211,10 @@ def handle_session_end(data):
         application_root.current_session_id = None
 
         # Emit confirmation back to the specific client who ended it
-        emit('session_ended', {'session_id': session_id_to_end}, room=request.sid)
+        emit('session_ended', {'session_id': session_id_to_end})
         # Optionally, broadcast to all clients if needed:
         # socketio.emit('session_ended', {'session_id': session_id_to_end})
     except Exception as e:
         db.session.rollback()
         print(f"Database error ending session via SocketIO: {e}")
-        emit('session_error', {'message': 'Failed to end session due to database error'}, room=request.sid)
+        emit('session_error', {'message': 'Failed to end session due to database error'})

@@ -56,7 +56,7 @@ const Index = () => {
     // Reset state for the new session
     setSessionId(''); // Will be set by backend confirmation
     setTrainingType(type);
-    setSessionStartTime(0); // Will be set by backend confirmation
+    setSessionStartTime(Date.now()); // Will be set by backend confirmation
     setAllReadings([]);
     // setCurrentReadingIndex(0); // Removed index tracking
     setCurrentReading({ timestamp: Date.now(), sensors: [...initialSensorData] }); // Reset to initial
@@ -95,7 +95,7 @@ const Index = () => {
       trainingType,
       startTime: sessionStartTime,
       endTime,
-      readings: allReadings.slice(0, currentReadingIndex + 1)
+      readings: allReadings
     });
     
     // Emit session_end event to the backend
@@ -182,7 +182,7 @@ const Index = () => {
     setCurrentReading(newReading);
     setAllReadings(prev => [...prev, newReading]);
     if (sessionStartTime > 0) { // Only calculate duration if start time is set
-      setSessionDuration(Math.floor((newReading.timestamp - sessionStartTime) / 1000));
+      setSessionDuration(Math.floor((Date.now() - sessionStartTime) / 1000));
     }
 
     // Check for alerts only if not already in alert state

@@ -7,10 +7,10 @@ const OVEREXERTION_THRESHOLD = 85; // 85% of baseline
 
 // Initial sensor data
 export const initialSensorData: SensorData[] = [
-  { id: 1, output: SENSOR_BASELINE, location: 'left-quad', label: 'Left Quadriceps', baseline: SENSOR_BASELINE },
-  { id: 2, output: SENSOR_BASELINE, location: 'right-quad', label: 'Right Quadriceps', baseline: SENSOR_BASELINE },
-  { id: 3, output: SENSOR_BASELINE, location: 'left-ham', label: 'Left Hamstring', baseline: SENSOR_BASELINE },
-  { id: 4, output: SENSOR_BASELINE, location: 'right-ham', label: 'Right Hamstring', baseline: SENSOR_BASELINE }
+  { id: 0, output: SENSOR_BASELINE, location: 'left-quad', label: 'Left Quadriceps', baseline: SENSOR_BASELINE },
+  { id: 1, output: SENSOR_BASELINE, location: 'right-quad', label: 'Right Quadriceps', baseline: SENSOR_BASELINE },
+  { id: 2, output: SENSOR_BASELINE, location: 'left-ham', label: 'Left Hamstring', baseline: SENSOR_BASELINE },
+  { id: 3, output: SENSOR_BASELINE, location: 'right-ham', label: 'Right Hamstring', baseline: SENSOR_BASELINE }
 ];
 
 // Create a normal fatigue pattern (gradual decline)
