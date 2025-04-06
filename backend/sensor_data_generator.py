@@ -6,7 +6,7 @@ import json
 
 # Configuration
 fs = 10  # Sampling frequency (Hz)
-duration_sec = 1 * 60  # Total duration in seconds (5 minutes)
+duration_sec = 1 * 30  # Total duration in seconds (5 minutes)
 t = np.linspace(0, duration_sec, int(duration_sec * fs))
 
 # Baseline force (Newtons) and deformation (mm) for each muscle
