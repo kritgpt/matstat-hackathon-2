@@ -95,9 +95,9 @@ const SessionSetup: React.FC<SessionSetupProps> = ({ onSessionStart }) => {
           <CardContent className="pt-6">
             <h2 className="text-xl font-semibold mb-4">Sensor Placement Guide</h2>
             <div className="relative aspect-[3/4] bg-gray-100 rounded-lg mb-4 overflow-hidden">
-              <div className="absolute inset-0 bg-[url('https://placehold.co/600x800/e2e8f0/1a2530?text=Sensor+Placement+Guide')] bg-cover bg-center" />
+              <div className="absolute inset-0 bg-[url('../body-map.png')] bg-cover bg-center" />
             </div>
-            <ul className="space-y-2">
+            {/* <ul className="space-y-2">
               <li className="flex items-center">
                 <span className="w-6 h-6 rounded-full bg-matstat-blue-light text-white flex items-center justify-center text-sm font-semibold mr-3">1</span>
                 <span>Place quadriceps sensors on the middle of the thigh</span>
@@ -110,7 +110,7 @@ const SessionSetup: React.FC<SessionSetupProps> = ({ onSessionStart }) => {
                 <span className="w-6 h-6 rounded-full bg-matstat-blue-light text-white flex items-center justify-center text-sm font-semibold mr-3">3</span>
                 <span>Ensure sensors are securely fastened</span>
               </li>
-            </ul>
+            </ul> */}
           </CardContent>
         </Card>
         
@@ -118,10 +118,10 @@ const SessionSetup: React.FC<SessionSetupProps> = ({ onSessionStart }) => {
           <Card className="shadow-lg">
             <CardContent className="pt-6">
               <h2 className="text-xl font-semibold mb-4">Sensor Status</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-center p-3 bg-gray-50 rounded-md">
                   {getSensorStatusIcon(sensorStatus['left-quad'])}
-                  <span className="ml-2">Left Quadriceps</span>
+                  <span className="ml-2"> Left Quadriceps</span>
                 </div>
                 <div className="flex items-center p-3 bg-gray-50 rounded-md">
                   {getSensorStatusIcon(sensorStatus['right-quad'])}

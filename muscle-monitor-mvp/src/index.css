@@ -87,7 +87,7 @@
 /* Custom styles for MatStat */
 @layer components {
   .sensor-indicator {
-    @apply w-6 h-6 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-md;
+    @apply w-6 h-6 rounded-full flex items-center justify-center text-sm font-bold shadow-md;
     transition: all 0.3s ease;
   }
   

@@ -54,7 +54,7 @@ const MuscleFatigueMap: React.FC<MuscleFatigueMapProps> = ({ sensors }) => {
         Muscle Fatigue Map
       </h3>
       
-      <div className="relative flex-grow flex items-center justify-center">
+      <div className="relative flex-grow bg-[url('../thighs.png')] flex items-center justify-center">
         {/* Human figure (stylized) */}
         <div className="relative w-[240px] h-[360px]">
           {/* Body outline */}
@@ -63,7 +63,7 @@ const MuscleFatigueMap: React.FC<MuscleFatigueMapProps> = ({ sensors }) => {
           {/* Sensor points */}
           {leftQuad && (
             <div 
-              className={`absolute top-[35%] left-[30%] sensor-indicator sensor-${getSensorStatus(leftQuad)}`}
+              className={`absolute top-[35%] left-[30%] sensor-indicator sensor-${getSensorStatus(leftQuad)} diagram-text`}
               title={`Left Quadriceps: ${getOutputPercentage(leftQuad)}%`}
             >
               <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white px-2 py-1 rounded-full shadow-sm border text-xs font-medium flex items-center gap-1">
@@ -75,7 +75,7 @@ const MuscleFatigueMap: React.FC<MuscleFatigueMapProps> = ({ sensors }) => {
           
           {rightQuad && (
             <div 
-              className={`absolute top-[35%] left-[70%] sensor-indicator sensor-${getSensorStatus(rightQuad)}`}
+              className={`absolute top-[35%] left-[70%] sensor-indicator sensor-${getSensorStatus(rightQuad)} diagram-text`}
               title={`Right Quadriceps: ${getOutputPercentage(rightQuad)}%`}
             >
               <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white px-2 py-1 rounded-full shadow-sm border text-xs font-medium flex items-center gap-1">
@@ -87,7 +87,7 @@ const MuscleFatigueMap: React.FC<MuscleFatigueMapProps> = ({ sensors }) => {
           
           {leftHam && (
             <div 
-              className={`absolute top-[65%] left-[30%] sensor-indicator sensor-${getSensorStatus(leftHam)}`}
+              className={`absolute top-[65%] left-[30%] sensor-indicator sensor-${getSensorStatus(leftHam)} diagram-text`}
               title={`Left Hamstring: ${getOutputPercentage(leftHam)}%`}
             >
               <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white px-2 py-1 rounded-full shadow-sm border text-xs font-medium flex items-center gap-1">
@@ -99,7 +99,7 @@ const MuscleFatigueMap: React.FC<MuscleFatigueMapProps> = ({ sensors }) => {
           
           {rightHam && (
             <div 
-              className={`absolute top-[65%] left-[70%] sensor-indicator sensor-${getSensorStatus(rightHam)}`}
+              className={`absolute top-[65%] left-[70%] sensor-indicator sensor-${getSensorStatus(rightHam)} diagram-text`}
               title={`Right Hamstring: ${getOutputPercentage(rightHam)}%`}
             >
               <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white px-2 py-1 rounded-full shadow-sm border text-xs font-medium flex items-center gap-1">
