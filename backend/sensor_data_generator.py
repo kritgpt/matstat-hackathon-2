@@ -102,7 +102,7 @@ if __name__ == '__main__':
         for data in data_list:
             # data['scenario'] = name
             try:
-                requests.post("http://10.5.12.71:5000/api/sensor_data", json=data)
+                requests.post("http://localhost:5000/api/sensor_data", json=data)
                 print(data)
             except requests.exceptions.RequestException as e:
                 print(f"Failed to send data: {e}")
