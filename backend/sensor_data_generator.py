@@ -38,7 +38,7 @@ def gradual_fatigue(t, baseline, fatigue_rate=0.0009, noise_frac=0.005):
 def sudden_asymmetry(t, baseline, target='R_ham', drop_frac=0.5, noise_frac=0.005):
     data = normal_training(t, baseline, noise_frac)
     idx_drop = len(t) // 2
-    data[target][idx_drop:] *= drop_frac
+    data[target][idx_drop:idx_drop+2] *= drop_frac
     return data
 
 def derive_deformation(force_series, baseline_force, baseline_def, k=0.005):

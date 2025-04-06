@@ -228,6 +228,7 @@ const Index = () => {
             allReadings={allReadings} // Pass all readings now
             trainingType={trainingType}
             sessionDuration={sessionDuration}
+            onEndSession={handleEndSession}
           />
         );
       case 'alert':
@@ -238,6 +239,7 @@ const Index = () => {
               allReadings={allReadings} // Pass all readings now
               trainingType={trainingType}
               sessionDuration={sessionDuration}
+              onEndSession={handleEndSession}
             />
             <AlertModal
               alert={alertData}

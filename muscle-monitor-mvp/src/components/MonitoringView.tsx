@@ -11,13 +11,15 @@ interface MonitoringViewProps {
   allReadings: SensorReading[];
   trainingType: TrainingType;
   sessionDuration: number; // in seconds
+  onEndSession: () => void;
 }
 
 const MonitoringView: React.FC<MonitoringViewProps> = ({ 
   currentReading, 
   allReadings,
   trainingType,
-  sessionDuration
+  sessionDuration,
+  onEndSession
 }) => {
   return (
     <div className="w-full max-w-6xl mx-auto py-8 px-4 animate-fade-in">
@@ -35,10 +37,7 @@ const MonitoringView: React.FC<MonitoringViewProps> = ({
   {(
     <button
       className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md shadow-sm transition"
-      onClick={() => {
-        // TODO: Add your session end logic here
-        console.log('Session ended');
-      }}
+      onClick={onEndSession}
     >
       End Session
     </button>
