@@ -25,6 +25,26 @@ const MonitoringView: React.FC<MonitoringViewProps> = ({
           <Activity className="h-7 w-7 mr-2 text-matstat-blue" />
           Real-time Monitoring
         </h1>      
+
+        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+  {/* <h1 className="text-5xl font-bold text-matstat-blue-dark text-center sm:text-left flex items-center justify-center sm:justify-start font-[Tahoma]">
+    <Activity className="h-7 w-7 mr-2 text-matstat-blue" />
+    Real-time Monitoring
+  </h1> */}
+
+  {(
+    <button
+      className="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-md shadow-sm transition"
+      onClick={() => {
+        // TODO: Add your session end logic here
+        console.log('Session ended');
+      }}
+    >
+      End Session
+    </button>
+  )}
+</div>
+
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-1">
           <MuscleFatigueMap sensors={currentReading.sensors} />
