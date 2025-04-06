@@ -88,7 +88,9 @@ const SessionSetup: React.FC<SessionSetupProps> = ({ onSessionStart }) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto py-8 px-4">
-      <h1 className="text-3xl font-bold text-matstat-blue-dark mb-8 text-center">Start Training Session</h1>
+              <h1 className="text-5xl font-bold text-matstat-blue-dark mb-8 text-center flex items-center justify-center font-[Tahoma]">
+
+      Start Training Session</h1>
       
       <div className="grid md:grid-cols-2 gap-8">
         <Card className="shadow-lg">

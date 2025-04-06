@@ -21,11 +21,10 @@ const MonitoringView: React.FC<MonitoringViewProps> = ({
 }) => {
   return (
     <div className="w-full max-w-6xl mx-auto py-8 px-4 animate-fade-in">
-      <h1 className="text-3xl font-bold text-matstat-blue-dark mb-8 text-center flex items-center justify-center">
-        <Activity className="h-7 w-7 mr-2 text-matstat-blue" />
-        Real-time Monitoring
-      </h1>
-      
+        <h1 className="text-5xl font-bold text-matstat-blue-dark mb-8 text-center flex items-center justify-center font-[Tahoma]">
+          <Activity className="h-7 w-7 mr-2 text-matstat-blue" />
+          Real-time Monitoring
+        </h1>      
       <div className="grid md:grid-cols-3 gap-6">
         <div className="md:col-span-1">
           <MuscleFatigueMap sensors={currentReading.sensors} />

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, ReferenceLine, Tooltip } from 'recharts';
 import { SensorReading } from '@/lib/types';
 import { BarChart3 } from 'lucide-react';
-
+import { Legend } from 'recharts';
 interface ForceOutputGraphProps {
   readings: SensorReading[];
   muscleGroup: 'quads' | 'hams';
@@ -108,18 +108,10 @@ const ForceOutputGraph: React.FC<ForceOutputGraphProps> = ({ readings, muscleGro
               dot={false}
               activeDot={{ r: 5, strokeWidth: 1 }}
             />
+            <Legend />
           </LineChart>
         </ResponsiveContainer>
-      </div>
-      <div className="flex items-center justify-center gap-4 mt-3">
-        <div className="flex items-center">
-          <div className="w-3 h-3 rounded-full bg-[#3498db] mr-1"></div>
-          <span className="text-xs font-medium">Left</span>
-        </div>
-        <div className="flex items-center">
-          <div className="w-3 h-3 rounded-full bg-[#2c3e50] mr-1"></div>
-          <span className="text-xs font-medium">Right</span>
-        </div>
+
       </div>
     </div>
   );

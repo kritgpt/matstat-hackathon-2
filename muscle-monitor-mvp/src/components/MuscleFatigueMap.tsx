@@ -54,11 +54,10 @@ const MuscleFatigueMap: React.FC<MuscleFatigueMapProps> = ({ sensors }) => {
         Muscle Fatigue Map
       </h3>
       
-      <div className="relative flex-grow bg-[url('../thighs.png')] flex items-center justify-center">
-        {/* Human figure (stylized) */}
+      <div className="relative flex-grow bg-[url('../thighs.png')] bg-contain bg-center bg-no-repeat flex items-center justify-center">        {/* Human figure (stylized) */}
         <div className="relative w-[240px] h-[360px]">
           {/* Body outline */}
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-100 to-gray-50 rounded-full" style={{ clipPath: 'polygon(40% 0, 60% 0, 65% 10%, 60% 30%, 60% 45%, 80% 90%, 70% 100%, 30% 100%, 20% 90%, 40% 45%, 40% 30%, 35% 10%)' }}></div>
+          {/* <div className="absolute inset-0 bg-gradient-to-b from-gray-100 to-gray-50 rounded-full" style={{ clipPath: 'polygon(40% 0, 60% 0, 65% 10%, 60% 30%, 60% 45%, 80% 90%, 70% 100%, 30% 100%, 20% 90%, 40% 45%, 40% 30%, 35% 10%)' }}></div> */}
           
           {/* Sensor points */}
           {leftQuad && (
