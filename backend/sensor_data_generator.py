@@ -6,7 +6,7 @@ import json
 
 # Configuration
 fs = 10  # Sampling frequency (Hz)
-duration_sec = 5 * 60  # Total duration in seconds (5 minutes)
+duration_sec = 1 * 60  # Total duration in seconds (5 minutes)
 t = np.linspace(0, duration_sec, int(duration_sec * fs))
 
 # Baseline force (Newtons) and deformation (mm) for each muscle
@@ -20,14 +20,14 @@ baseline = {
 def add_noise(signal, std):
     return signal + np.random.normal(0, std, size=signal.shape)
 
-def normal_training(t, baseline, noise_frac=0.02):
+def normal_training(t, baseline, noise_frac=0.002):
     data = {}
     for muscle, (f0, _) in baseline.items():
         noise_std = f0 * noise_frac
         data[muscle] = add_noise(np.ones_like(t) * f0, noise_std)
     return data
 
-def gradual_fatigue(t, baseline, fatigue_rate=0.0009, noise_frac=0.002):
+def gradual_fatigue(t, baseline, fatigue_rate=0.0009, noise_frac=0.005):
     data = {}
     for muscle, (f0, _) in baseline.items():
         decay = np.exp(-fatigue_rate * t)
@@ -35,7 +35,7 @@ def gradual_fatigue(t, baseline, fatigue_rate=0.0009, noise_frac=0.002):
         data[muscle] = noisy_force
     return data
 
-def sudden_asymmetry(t, baseline, target='R_ham', drop_frac=0.5, noise_frac=0.02):
+def sudden_asymmetry(t, baseline, target='R_ham', drop_frac=0.5, noise_frac=0.005):
     data = normal_training(t, baseline, noise_frac)
     idx_drop = len(t) // 2
     data[target][idx_drop:] *= drop_frac
@@ -91,8 +91,8 @@ def df_to_json(df):
 if __name__ == '__main__':
     scenarios = {
         # 'normal': normal_training,
-        'fatigue': gradual_fatigue,
-        # 'asymmetry': sudden_asymmetry,
+        # 'fatigue': gradual_fatigue,
+        'asymmetry': sudden_asymmetry,
     }
 
     for name, func in scenarios.items():
