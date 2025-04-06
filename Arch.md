@@ -150,3 +150,9 @@ interface AlertData {
 
 ## Conclusion
 The ASK system combines modern web technologies with sensor data processing to create a comprehensive muscle monitoring solution. The architecture balances real-time performance with scalability, allowing for future enhancements while delivering immediate value through injury prevention and performance optimization.
+
+## Research References
+
+1. Kuriakose, Ivin, et al. "Wearable pressure sensor suit for real-time detection of incorrect exercise techniques." 2022 IEEE Sensors. IEEE, 2022.
+
+2. Alvarez, Jonathan T., et al. "Towards soft wearable strain sensors for muscle activity monitoring." IEEE Transactions on Neural Systems and Rehabilitation Engineering 30 (2022): 2198-2206.

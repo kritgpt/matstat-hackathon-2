@@ -257,7 +257,12 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <header className="app-header">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
-          <div className="flex items-center">
+          <div 
+            className="flex items-center cursor-pointer" 
+            onClick={() => setSessionStatus('setup')}
+            role="button"
+            aria-label="Go to home page"
+          >
             <div className="font-bold text-xl">MatStat</div>
             <div className="ml-2 text-xs bg-matstat-blue-light/90 rounded-full px-2 py-0.5 shadow-inner">MVP</div>
           </div>
