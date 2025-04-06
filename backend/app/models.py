@@ -1,15 +1,16 @@
 from datetime import datetime
-from . import db # Assuming db is initialized in __init__.py
+from . import db
 
 class TrainingSession(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     start_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     end_time = db.Column(db.DateTime, index=True, nullable=True)
     status = db.Column(db.String(20), default='active', index=True) # e.g., 'active', 'completed'
+    training_type = db.Column(db.String(50), nullable=True)
     readings = db.relationship('SensorReading', backref='session', lazy='dynamic', cascade="all, delete-orphan")
 
     def __repr__(self):
-        return f'<TrainingSession {self.id} started {self.start_time}>'
+        return f'<TrainingSession {self.id} ({self.training_type}) started {self.start_time}>'
 
 class SensorReading(db.Model):
     id = db.Column(db.Integer, primary_key=True)

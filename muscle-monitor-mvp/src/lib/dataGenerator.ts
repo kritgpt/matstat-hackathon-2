@@ -7,16 +7,16 @@ const OVEREXERTION_THRESHOLD = 85; // 85% of baseline
 
 // Initial sensor data
 export const initialSensorData: SensorData[] = [
-  { id: 1, output: SENSOR_BASELINE, location: 'left-quad', label: 'Left Quadriceps', baseline: SENSOR_BASELINE },
-  { id: 2, output: SENSOR_BASELINE, location: 'right-quad', label: 'Right Quadriceps', baseline: SENSOR_BASELINE },
-  { id: 3, output: SENSOR_BASELINE, location: 'left-ham', label: 'Left Hamstring', baseline: SENSOR_BASELINE },
-  { id: 4, output: SENSOR_BASELINE, location: 'right-ham', label: 'Right Hamstring', baseline: SENSOR_BASELINE }
+  { id: 0, output: SENSOR_BASELINE, location: 'left-quad', label: 'Left Quadriceps', baseline: SENSOR_BASELINE },
+  { id: 1, output: SENSOR_BASELINE, location: 'right-quad', label: 'Right Quadriceps', baseline: SENSOR_BASELINE },
+  { id: 2, output: SENSOR_BASELINE, location: 'left-ham', label: 'Left Hamstring', baseline: SENSOR_BASELINE },
+  { id: 3, output: SENSOR_BASELINE, location: 'right-ham', label: 'Right Hamstring', baseline: SENSOR_BASELINE }
 ];
 
 // Create a normal fatigue pattern (gradual decline)
 const createNormalFatigue = (duration: number, startValue: number = SENSOR_BASELINE): number[] => {
   return Array(duration).fill(0).map((_, index) => {
-    // Create a gradual decline that speeds up slightly over time
+    // Create a grahttp://localhost:8080/dual decline that speeds up slightly over time
     const timeRatio = index / duration;
     const decline = startValue * (0.05 + (timeRatio * 0.2));
     
@@ -69,55 +69,6 @@ const createRecoveryPattern = (
     const noise = (Math.random() * 3) - 1.5;
     
     return Math.min(startValue + recovery + noise, baselineValue * 0.95);
-  });
-};
-
-// Generate data patterns based on training type
-export const generateSessionData = (
-  duration: number = 180, // 3 minutes
-  trainingType: TrainingType = 'high-intensity',
-  triggerAlert: boolean = true
-): SensorReading[] => {
-  // Generate default patterns for all muscles
-  let leftQuadData = createNormalFatigue(duration);
-  const rightQuadData = createNormalFatigue(duration);
-  let leftHamData = createNormalFatigue(duration);
-  let rightHamData = createNormalFatigue(duration);
-  
-  // If we want to trigger an alert, create a specific muscle fatigue
-  if (triggerAlert) {
-    // Right hamstring will have more fatigue to trigger an alert
-    rightHamData = createMuscleFatigue(duration);
-    
-    // If it's high intensity, also make the left quad fatigue more
-    if (trainingType === 'high-intensity') {
-      leftQuadData = createMuscleFatigue(duration, SENSOR_BASELINE, 0.8);
-    }
-  }
-  
-  // Create the full set of readings
-  return Array(duration).fill(0).map((_, index) => {
-    return {
-      timestamp: Date.now() + (index * 1000), // One reading per second
-      sensors: [
-        {
-          ...initialSensorData[0],
-          output: leftQuadData[index]
-        },
-        {
-          ...initialSensorData[1],
-          output: rightQuadData[index]
-        },
-        {
-          ...initialSensorData[2],
-          output: leftHamData[index]
-        },
-        {
-          ...initialSensorData[3],
-          output: rightHamData[index]
-        }
-      ]
-    };
   });
 };
 
@@ -203,38 +154,4 @@ export const checkForAlerts = (reading: SensorReading): AlertData => {
     },
     recommendation: ''
   };
-};
-
-// Generate a modified dataset after intervention
-export const generateRecoveryData = (
-  currentReading: SensorReading,
-  duration: number = 60 // 1 minute of recovery data
-): SensorReading[] => {
-  // Create recovery patterns for each sensor
-  return Array(duration).fill(0).map((_, index) => {
-    return {
-      timestamp: currentReading.timestamp + ((index + 1) * 1000),
-      sensors: currentReading.sensors.map(sensor => {
-        // More recovery for the most fatigued muscles
-        const fatigueRatio = sensor.output / sensor.baseline;
-        let recoveryPattern: number[];
-        
-        if (fatigueRatio < 0.75) {
-          // Heavily fatigued - significant recovery
-          recoveryPattern = createRecoveryPattern(duration, sensor.output, sensor.baseline);
-        } else if (fatigueRatio < 0.9) {
-          // Moderately fatigued - moderate recovery
-          recoveryPattern = createRecoveryPattern(duration, sensor.output, sensor.baseline);
-        } else {
-          // Not very fatigued - maintain or slight fatigue
-          recoveryPattern = createNormalFatigue(duration, sensor.output);
-        }
-        
-        return {
-          ...sensor,
-          output: recoveryPattern[index]
-        };
-      })
-    };
-  });
 };

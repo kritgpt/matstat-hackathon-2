@@ -37,7 +37,7 @@ interface FatigueAnalysis {
 const SessionSummary: React.FC<SessionSummaryProps> = ({ sessionData, onStartNewSession }) => {
   // Calculate session duration in minutes
   const sessionDuration = sessionData.endTime 
-    ? Math.floor((sessionData.endTime - sessionData.startTime) / 60000)
+    ? Math.round((sessionData.endTime - sessionData.startTime) / 60000)
     : 0;
     
   // Transform readings data for the graph
@@ -357,23 +357,55 @@ const SessionSummary: React.FC<SessionSummaryProps> = ({ sessionData, onStartNew
                 <AlertTriangle size={16} className="mr-1 text-matstat-alert-warning" />
                 Potential Problem Areas
               </h3>
-              
+              {fatigueAnalysis.leftQuad?.change && fatigueAnalysis.leftQuad.change < -15 ? (
+                <div className="flex items-center text-sm mt-2">
+                  <span className="w-2 h-2 rounded-full bg-matstat-alert-danger mr-2"></span>
+                  <span>Left quadriceps showed significant fatigue (-{Math.abs(fatigueAnalysis.leftQuad.change)}%)</span>
+                </div>
+              ) : null}
+
+              {fatigueAnalysis.rightQuad?.change && fatigueAnalysis.rightQuad.change < -15 ? (
+                <div className="flex items-center text-sm mt-2">
+                  <span className="w-2 h-2 rounded-full bg-matstat-alert-danger mr-2"></span>
+                  <span>Right quadriceps showed significant fatigue (-{Math.abs(fatigueAnalysis.rightQuad.change)}%)</span>
+                </div>
+              ) : null}
+
+              {fatigueAnalysis.leftHam?.change && fatigueAnalysis.leftHam.change < -15 ? (
+                <div className="flex items-center text-sm mt-2">
+                  <span className="w-2 h-2 rounded-full bg-matstat-alert-danger mr-2"></span>
+                  <span>Left hamstring showed significant fatigue (-{Math.abs(fatigueAnalysis.leftHam.change)}%)</span>
+                </div>
+              ) : null}
+
               {fatigueAnalysis.rightHam?.change && fatigueAnalysis.rightHam.change < -15 ? (
-                <div className="flex items-center text-sm">
+                <div className="flex items-center text-sm mt-2">
                   <span className="w-2 h-2 rounded-full bg-matstat-alert-danger mr-2"></span>
                   <span>Right hamstring showed significant fatigue (-{Math.abs(fatigueAnalysis.rightHam.change)}%)</span>
                 </div>
-              ) : (
-                <div className="text-sm">No significant problem areas detected.</div>
-              )}
-              
+              ) : null}
+
               {Math.abs((fatigueAnalysis.leftQuad?.end || 0) - (fatigueAnalysis.rightQuad?.end || 0)) > 10 && (
                 <div className="flex items-center text-sm mt-2">
                   <span className="w-2 h-2 rounded-full bg-matstat-alert-warning mr-2"></span>
-                  <span>
-                    Quad asymmetry: {Math.abs((fatigueAnalysis.leftQuad?.end || 0) - (fatigueAnalysis.rightQuad?.end || 0))}% difference
-                  </span>
+                  <span>Quad asymmetry: {Math.abs((fatigueAnalysis.leftQuad?.end || 0) - (fatigueAnalysis.rightQuad?.end || 0))}% difference</span>
                 </div>
+              )}
+
+              {Math.abs((fatigueAnalysis.leftHam?.end || 0) - (fatigueAnalysis.rightHam?.end || 0)) > 10 && (
+                <div className="flex items-center text-sm mt-2">
+                  <span className="w-2 h-2 rounded-full bg-matstat-alert-warning mr-2"></span>
+                  <span>Hamstring asymmetry: {Math.abs((fatigueAnalysis.leftHam?.end || 0) - (fatigueAnalysis.rightHam?.end || 0))}% difference</span>
+                </div>
+              )}
+
+              {(!fatigueAnalysis.leftQuad?.change || fatigueAnalysis.leftQuad.change >= -15) && 
+               (!fatigueAnalysis.rightQuad?.change || fatigueAnalysis.rightQuad.change >= -15) && 
+               (!fatigueAnalysis.leftHam?.change || fatigueAnalysis.leftHam.change >= -15) && 
+               (!fatigueAnalysis.rightHam?.change || fatigueAnalysis.rightHam.change >= -15) && 
+               Math.abs((fatigueAnalysis.leftQuad?.end || 0) - (fatigueAnalysis.rightQuad?.end || 0)) <= 10 &&
+               Math.abs((fatigueAnalysis.leftHam?.end || 0) - (fatigueAnalysis.rightHam?.end || 0)) <= 10 && (
+                <div className="text-sm">No significant problem areas detected.</div>
               )}
             </div>
           </CardContent>
@@ -404,13 +436,13 @@ const SessionSummary: React.FC<SessionSummaryProps> = ({ sessionData, onStartNew
         >
           Start New Session
         </Button>
-        <Button
+        {/* <Button
           variant="outline"
           className="flex-1 py-6"
           onClick={handleExport}
         >
           <Download size={18} className="mr-2" /> Download Session Data
-        </Button>
+        </Button> */}
       </div>
     </div>
   );

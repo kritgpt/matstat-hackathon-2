@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify, current_app
+from flask_socketio import emit # Import emit
 from datetime import datetime
 from . import db, socketio # Import db and socketio from the app package (__init__.py)
 from .models import TrainingSession, SensorReading
@@ -121,3 +122,99 @@ def receive_sensor_data():
         # Don't fail the request if emit fails, data is already saved.
 
     return jsonify({'message': f'Received {len(readings_to_add)} sensor readings'}), 201
+
+
+# --- SocketIO Event Handlers ---
+
+@socketio.on('connect')
+def handle_connect():
+    """Handles client connection."""
+    print(f'Client connected: {request.sid}')
+    # Optionally, send back active session info if one exists
+    if application_root.current_session_id:
+        active_session = db.session.get(TrainingSession, application_root.current_session_id)
+        if active_session and active_session.status == 'active':
+            emit('session_started', {
+                'session_id': active_session.id,
+                'start_time': active_session.start_time.isoformat()
+            }, room=request.sid) # Emit only to the connecting client
+
+
+@socketio.on('disconnect')
+def handle_disconnect():
+    """Handles client disconnection."""
+    print(f'Client disconnected: {request.sid}')
+
+
+@socketio.on('session_start')
+def handle_session_start(data):
+    """Handles request to start a new session via SocketIO."""
+    print(f"Received session_start event from {request.sid} with data: {data}")
+    training_type = data.get('trainingType', 'unknown') # Get training type from client
+
+    if application_root.current_session_id is not None:
+        existing_session = db.session.get(TrainingSession, application_root.current_session_id)
+        if existing_session and existing_session.status == 'active':
+            print(f"Conflict: Session {application_root.current_session_id} is already active.")
+            # Optionally emit an error back to the specific client
+            emit('session_error', {'message': 'Another session is already active'})
+            return # Prevent starting a new one
+
+    # Create new session
+    try:
+        new_session = TrainingSession(start_time=datetime.utcnow(), status='active', training_type=training_type)
+        db.session.add(new_session)
+        db.session.commit()
+        application_root.current_session_id = new_session.id
+        print(f"Started new session via SocketIO: {application_root.current_session_id}")
+
+        # Emit confirmation back to the specific client who started it
+        emit('session_started', {
+            'session_id': new_session.id,
+            'start_time': new_session.start_time.isoformat()
+        })
+    except Exception as e:
+        db.session.rollback()
+        print(f"Database error starting session via SocketIO: {e}")
+        emit('session_error', {'message': 'Failed to start session due to database error'})
+
+
+@socketio.on('session_end')
+def handle_session_end(data):
+    """Handles request to end the current session via SocketIO."""
+    print(f"Received session_end event from {request.sid} with data: {data}")
+    # We use the globally tracked ID, ignoring any ID sent by client for now for simplicity
+    session_id_to_end = application_root.current_session_id
+
+    if session_id_to_end is None:
+        print("No active session to end.")
+        emit('session_error', {'message': 'No active session to end'})
+        return
+
+    session_to_end = db.session.get(TrainingSession, session_id_to_end)
+    if not session_to_end:
+        print(f"Error: Active session ID {session_id_to_end} not found in DB.")
+        application_root.current_session_id = None # Clear inconsistent state
+        emit('session_error', {'message': 'Active session not found in database'})
+        return
+
+    if session_to_end.status != 'active':
+         print(f"Warning: Attempting to end session {session_id_to_end} which is not active (status: {session_to_end.status}).")
+         # Decide if we should still end it or just clear the global ID
+         # For now, let's proceed but clear the global ID regardless
+
+    try:
+        session_to_end.end_time = datetime.utcnow()
+        session_to_end.status = 'completed'
+        db.session.commit()
+        print(f"Ended session via SocketIO: {session_id_to_end}")
+        application_root.current_session_id = None
+
+        # Emit confirmation back to the specific client who ended it
+        emit('session_ended', {'session_id': session_id_to_end})
+        # Optionally, broadcast to all clients if needed:
+        # socketio.emit('session_ended', {'session_id': session_id_to_end})
+    except Exception as e:
+        db.session.rollback()
+        print(f"Database error ending session via SocketIO: {e}")
+        emit('session_error', {'message': 'Failed to end session due to database error'})
