@@ -1,4 +1,5 @@
-# ASK Athletic Monitoring System Architecture
+# Technical Architecture Document
+***MatStat - Team 3***
 
 ## Overview
 - **Backend:** Flask-based REST API with WebSocket support
@@ -41,6 +42,7 @@
     - Session analytics and historical performance tracking
 
 ## Data Flow
+![alt text](arch_flow.png "Flow of Data")
 
 ### Data Acquisition
 - Sensors measure muscle force/deformation at configurable frequency (10Hz in simulation)
